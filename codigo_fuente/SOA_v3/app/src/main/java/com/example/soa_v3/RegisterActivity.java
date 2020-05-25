@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -40,7 +41,15 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void enviar() {
-        Toast.makeText(getApplicationContext(),"Se envió el formulario de registro",Toast.LENGTH_LONG).show();
+        String nombre = ((EditText)findViewById(R.id.editTextNombre)).getText().toString();
+        String apellido = ((EditText)findViewById(R.id.editTextApellido)).getText().toString();
+        String dni = ((EditText)findViewById(R.id.editTextDNI)).getText().toString();
+        String email = ((EditText)findViewById(R.id.editTextEmail)).getText().toString();
+        String password = ((EditText)findViewById(R.id.editTextPassword)).getText().toString();
+        String grupo = ((EditText)findViewById(R.id.editTextGrupo)).getText().toString();
+        String comision = ((EditText)findViewById(R.id.editTextComision)).getText().toString();
+
+        Toast.makeText(getApplicationContext(),nombre + " " + apellido + " " + dni + " " + email + " " + password + " " + grupo + " " + comision,Toast.LENGTH_LONG).show();
         finish();
     }
 }
