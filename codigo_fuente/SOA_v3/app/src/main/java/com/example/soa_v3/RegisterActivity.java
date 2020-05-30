@@ -21,7 +21,6 @@ public class RegisterActivity extends AppCompatActivity {
         btnCancelar = (Button) findViewById(R.id.btnCancelar);
         btnEnviar = (Button) findViewById(R.id.btnEnviar);
 
-
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
