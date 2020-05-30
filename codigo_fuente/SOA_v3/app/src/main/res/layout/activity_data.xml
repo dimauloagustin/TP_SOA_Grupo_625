@@ -11,8 +11,8 @@
         android:id="@+id/textView42"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginTop="75dp"
         android:text="Temperatura"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -62,13 +62,13 @@
         android:id="@+id/textView38"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="100dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:text="Mediciones"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
@@ -197,17 +197,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TableLayout
-        android:id="@+id/tvDataTableLayout"
-        android:layout_width="363dp"
-        android:layout_height="220dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:stretchColumns="0,1"
-        app:layout_constraintEnd_toEndOf="@+id/tvDataTemperatura"
-        app:layout_constraintHorizontal_bias="0.489"
+    <ScrollView
+        android:layout_width="359dp"
+        android:layout_height="217dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSalir"
+        app:layout_constraintEnd_toEndOf="@+id/textView42"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="@+id/textView41"
-        app:layout_constraintTop_toBottomOf="@+id/textView42">
+        app:layout_constraintTop_toBottomOf="@+id/textView41"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
-    </TableLayout>
+        <TableLayout
+            android:id="@+id/tvDataTableLayout"
+            android:layout_width="363dp"
+            android:layout_height="220dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:stretchColumns="0,1"
+            app:layout_constraintEnd_toEndOf="@+id/tvDataTemperatura"
+            app:layout_constraintHorizontal_bias="0.489"
+            app:layout_constraintStart_toStartOf="@+id/textView41"
+            app:layout_constraintTop_toBottomOf="@+id/textView42">
+
+        </TableLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

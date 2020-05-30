@@ -32,6 +32,19 @@ public class DataActivity extends AppCompatActivity {
         });
 
         addColumn("aaaa","bbbb2");
+        addColumn("aaab","bbbb3");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
+        addColumn("aaac","bbbb4");
     }
 
     private void addColumn(String dato1, String dato2){
