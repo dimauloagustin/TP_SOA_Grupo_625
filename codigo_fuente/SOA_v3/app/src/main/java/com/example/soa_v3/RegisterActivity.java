@@ -49,6 +49,9 @@ public class RegisterActivity extends AppCompatActivity {
         String comision = ((EditText)findViewById(R.id.editTextComision)).getText().toString();
 
         Toast.makeText(getApplicationContext(),nombre + " " + apellido + " " + dni + " " + email + " " + password + " " + grupo + " " + comision,Toast.LENGTH_LONG).show();
+
+
+
         finish();
     }
 }

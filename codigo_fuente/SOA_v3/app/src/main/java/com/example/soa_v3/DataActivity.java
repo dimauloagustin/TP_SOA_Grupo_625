@@ -2,6 +2,10 @@ package com.example.soa_v3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -10,10 +14,17 @@ import android.widget.GridLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class DataActivity extends AppCompatActivity {
+public class DataActivity extends AppCompatActivity implements SensorEventListener{
     private Button btnSalir;
     private TableLayout tblLayout;
+    private SensorManager sensorManager;
+
+    boolean temp = false;
+    boolean light = false;
+    String tempString = "";
+    String lightString = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,20 +42,9 @@ public class DataActivity extends AppCompatActivity {
             }
         });
 
-        addColumn("aaaa","bbbb2");
-        addColumn("aaab","bbbb3");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
-        addColumn("aaac","bbbb4");
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE), SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     private void addColumn(String dato1, String dato2){
@@ -65,5 +65,30 @@ public class DataActivity extends AppCompatActivity {
 
     public void salir() {
         finish();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event){
+        synchronized (this){
+            switch (event.sensor.getType()){
+                case Sensor.TYPE_AMBIENT_TEMPERATURE:
+                    tempString = event.values[0] + "";
+                    temp = true;
+                    sensorManager.unregisterListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE));
+                    break;
+                case Sensor.TYPE_LIGHT:
+                    lightString = event.values[0] + "";
+                    light = true;
+                    sensorManager.unregisterListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT));
+                    break;
+            }
+            if(temp&&light){
+                addColumn(lightString,tempString);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 }
