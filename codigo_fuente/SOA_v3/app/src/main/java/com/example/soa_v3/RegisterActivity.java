@@ -68,19 +68,31 @@ public class RegisterActivity extends AppCompatActivity {
         registerRequest.setGrupo(Integer.parseInt(((EditText)findViewById(R.id.editTextGrupo)).getText().toString()));
         registerRequest.setComision(Integer.parseInt(((EditText)findViewById(R.id.editTextComision)).getText().toString()));
 
-        Intent i = new Intent(this, WebService.class);
-        i.putExtra("url", "http://so-unlam.net.ar/api/api/register");
-        i.putExtra("action", ReceptorRegistro.ACTION_RESP);
-        try {
-            //i.putExtra("body", registerRequest.parse());
-            String magicKey = UUID.randomUUID().toString();
-            i.putExtra("magic", magicKey);
-            MagicHelper.AddMagic(magicKey, registerRequest);
+        boolean isValid = true;
+        if(!registerRequest.getEmail().contains("@")||!registerRequest.getEmail().contains(".")) {
+            ((EditText)findViewById(R.id.editTextPassword)).setError("ingrese un email valido");
+            isValid = false;
+        }
+        if(registerRequest.getPassword().length()<8) {
+            ((EditText)findViewById(R.id.editTextPassword)).setError("contraseña minima de 8 caracteres");
+            isValid = false;
+        }
 
-            startService(i);
+        if(isValid) {
+            Intent i = new Intent(this, WebService.class);
+            i.putExtra("url", "http://so-unlam.net.ar/api/api/register");
+            i.putExtra("action", ReceptorRegistro.ACTION_RESP);
+            try {
+                //i.putExtra("body", registerRequest.parse());
+                String magicKey = UUID.randomUUID().toString();
+                i.putExtra("magic", magicKey);
+                MagicHelper.AddMagic(magicKey, registerRequest);
 
-        } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                startService(i);
+
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
