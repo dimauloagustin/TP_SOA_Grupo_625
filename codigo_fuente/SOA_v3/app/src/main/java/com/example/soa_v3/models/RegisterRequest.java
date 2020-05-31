@@ -3,7 +3,9 @@ package com.example.soa_v3.models;
 import com.example.soa_v3.helpers.HttpRestHelper;
 import org.json.JSONObject;
 
-public class RegisterRequest {
+import java.util.HashMap;
+
+public class RegisterRequest implements IRequest{
     private String name;
     private String lastName;
     private int dni;
@@ -11,6 +13,8 @@ public class RegisterRequest {
     private String password;
     private int comision;
     private int grupo;
+
+    public HashMap<String,String> headers;
 
     public String getName() {
         return name;
@@ -68,9 +72,14 @@ public class RegisterRequest {
         this.grupo = grupo;
     }
 
+    @Override
     public String parse() throws Exception {
+
+        headers = new HashMap<String, String>();
+
         JSONObject json = new JSONObject();
-        json.put("env", "TEST");
+
+        json.put("env", "DEV");
         json.put("name", this.name);
         json.put("lastname", this.lastName);
         json.put("dni", this.dni);
@@ -80,5 +89,10 @@ public class RegisterRequest {
         json.put("group", this.grupo);
 
         return json.toString();
+    }
+
+    @Override
+    public HashMap<String, String> getHeaders() {
+        return headers;
     }
 }
