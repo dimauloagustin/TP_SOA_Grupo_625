@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         boolean isValid = true;
         if(!registerRequest.getEmail().contains("@")||!registerRequest.getEmail().contains(".")) {
-            ((EditText)findViewById(R.id.editTextPassword)).setError("ingrese un email valido");
+            ((EditText)findViewById(R.id.editTextEmail)).setError("ingrese un email valido");
             isValid = false;
         }
         if(registerRequest.getPassword().length()<8) {
