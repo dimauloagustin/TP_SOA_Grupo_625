@@ -2,6 +2,10 @@ package com.example.soa_v3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -17,10 +21,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.soa_v3.helpers.MagicHelper;
+import com.example.soa_v3.models.EventRequest;
+import com.example.soa_v3.models.EventResponse;
+import com.example.soa_v3.models.LoginResponse;
+import com.example.soa_v3.services.WebService;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class DataActivity extends AppCompatActivity implements SensorEventListener{
     private Button btnSalir;
@@ -79,6 +90,11 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT), SensorManager.SENSOR_DELAY_NORMAL);
         MAX_VALUE_LIGHT = (int) sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT).getMaximumRange();
 
+
+        IntentFilter filtro = new IntentFilter(DataActivity.ReceptorEvent.ACTION_RESP);
+        filtro.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(new DataActivity.ReceptorEvent(), filtro);
+
         loadData();
         loadViewTable();
     }
@@ -89,6 +105,24 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
 
         lsTemperature.add(iTemperature + "");
         lsLight.add(iLight + "");
+
+
+        EventRequest eventRequest = new EventRequest();
+        eventRequest.setTypeEvent("datos guardados");
+        eventRequest.setDescripcion("Temperatura: " + iTemperature + ", Luz: " + iLight);
+        eventRequest.addToken(MagicHelper.token);
+        Intent i = new Intent(this, WebService.class);
+        i.putExtra("url", "http://so-unlam.net.ar/api/api/event");
+        i.putExtra("action", DataActivity.ReceptorEvent.ACTION_RESP);
+        try {
+            String magicKey = UUID.randomUUID().toString();
+            i.putExtra("magic", magicKey);
+            MagicHelper.AddMagic(magicKey, eventRequest);
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        startService(i);
+
 
         saveData();
         loadViewTable();
@@ -167,6 +201,11 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
     private String converLSToString(List<String> list) {
         StringBuilder csvList = new StringBuilder();
         for(String s : list){
@@ -204,5 +243,27 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
         lsTemperature = converStringToLS(dataTemperature);
 
     }
-    
+
+    public class ReceptorEvent extends BroadcastReceiver {
+        public static final String ACTION_RESP = "com.example.soa_v3.intent.action.RESPUESTA_OPERACION_EVENT";
+
+        @Override
+        public void onReceive(Context contexto, Intent intento){
+            boolean isSuccess = intento.getBooleanExtra("isSucces",false);
+            if(isSuccess){
+                try {
+                    EventResponse eventResponse = new EventResponse(intento.getStringExtra("res"));
+                    if(eventResponse.getState().equals( "success")) {
+                        Toast.makeText(contexto.getApplicationContext(), "guardado en servidor", Toast.LENGTH_LONG).show();
+                        //finish();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(contexto.getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }else{
+                Toast.makeText(contexto.getApplicationContext(), intento.getStringExtra("res"), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 }

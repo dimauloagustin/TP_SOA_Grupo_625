@@ -8,7 +8,7 @@ public class EventRequest implements  IRequest{
     private String typeEvent;
     private String descripcion;
 
-    public HashMap<String,String> headers;
+    public HashMap<String,String> headers = new HashMap<String, String>();
 
     public String getTypeEvent() {
         return typeEvent;
@@ -29,8 +29,6 @@ public class EventRequest implements  IRequest{
     public void addToken(String token) { headers.put("token",token); }
 
     public String parse() throws Exception {
-
-        headers = new HashMap<String, String>();
 
         JSONObject json = new JSONObject();
 
