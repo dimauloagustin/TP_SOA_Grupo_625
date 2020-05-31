@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -30,12 +31,7 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
     private TextView tvDataTemperatura;
     private TextView tvDataLuz;
 
-    boolean temp = false;
-    boolean light = false;
-    String lightString = "-";
-    String tempString = "-";
-
-    int MAX_VALUE_LIGHT = 4000;
+    float MAX_VALUE_LIGHT;
     int iLight = 0;
     int iTemperature = 0;
 
@@ -43,8 +39,8 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
     private List<String> lsLight = new ArrayList<String>();
 
     private static final String SHARED_PREFS = "sharedPrefs";
-    private static final String SP_LIGHT = "";
-    private static final String SP_TEMPERATURE = "";
+    private static final String SP_LIGHT = "light";
+    private static final String SP_TEMPERATURE = "temperature";
 
 
 
@@ -77,7 +73,7 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE), SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT), SensorManager.SENSOR_DELAY_NORMAL);
-        MAX_VALUE_LIGHT = (int) sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT).getMaximumRange();
+        MAX_VALUE_LIGHT = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT).getMaximumRange();
 
         loadData();
         loadViewTable();
@@ -111,13 +107,22 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
             String tmpTemperature = "-";
             String tmpLight = "-";
             if (i < lsTemperature.size()) {
-                tmpTemperature = lsTemperature.get(i);
+                try {
+                    tmpTemperature = converToHumanTemperature(Integer.parseInt(lsTemperature.get(i)));
+                } catch (Exception e){
+                    Toast.makeText(getApplicationContext(), "pone un número!! temperatura" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                };
+
             }
             if (i < lsLight.size()) {
-                tmpLight = lsLight.get(i);
+                try {
+                    tmpLight = converToHumanLight(Integer.parseInt(lsLight.get(i)));
+                } catch (Exception e){
+                    Toast.makeText(getApplicationContext(), "pone un número luz !!", Toast.LENGTH_SHORT).show();
+                };
             }
 
-            addRow(tmpLight, tmpTemperature);
+            addRow(tmpLight,  tmpTemperature);
         }
     }
 
@@ -143,7 +148,7 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private String converToHumanLight(int iLight){
-        return ((int)(iLight / MAX_VALUE_LIGHT) * 100)+ " %";
+        return ((iLight / 40000) * 100 )+ " %";
     }
 
 
@@ -200,9 +205,16 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
         String dataLight = sharedPreferences.getString(SP_LIGHT, "");
         String dataTemperature = sharedPreferences.getString(SP_TEMPERATURE, "");
 
-        lsLight = converStringToLS(dataLight);
-        lsTemperature = converStringToLS(dataTemperature);
+        if (dataLight != "") {
+            lsLight = converStringToLS(dataLight);
+        }
+        if (dataTemperature != ""){
+            lsTemperature = converStringToLS(dataTemperature);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-    
 }
