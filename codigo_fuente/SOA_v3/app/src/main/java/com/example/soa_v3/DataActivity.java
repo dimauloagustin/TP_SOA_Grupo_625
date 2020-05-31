@@ -16,10 +16,14 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class DataActivity extends AppCompatActivity implements SensorEventListener{
     private Button btnSalir;
     private TableLayout tblLayout;
     private SensorManager sensorManager;
+    private TextView tvDataTemperatura;
+    private TextView tvDataLuz;
 
     boolean temp = false;
     boolean light = false;
@@ -33,6 +37,10 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
 
         btnSalir = (Button) findViewById(R.id.btnSalir);
         tblLayout = (TableLayout) findViewById(R.id.tvDataTableLayout);
+        tvDataLuz = (TextView) findViewById(R.id.tvDataLuz);
+        tvDataTemperatura = (TextView) findViewById(R.id.tvDataTemperatura);
+
+
 
 
         btnSalir.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +71,11 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
         tblLayout.addView(tblRow);
     }
 
+    private void updateViewSensores(String luz, String temperatura) {
+        tvDataLuz.setText(luz);
+        tvDataTemperatura.setText(temperatura);
+    }
+
     public void salir() {
         finish();
     }
@@ -74,16 +87,16 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
                 case Sensor.TYPE_AMBIENT_TEMPERATURE:
                     tempString = event.values[0] + "";
                     temp = true;
-                    sensorManager.unregisterListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE));
+                    //sensorManager.unregisterListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE));
                     break;
                 case Sensor.TYPE_LIGHT:
                     lightString = event.values[0] + "";
                     light = true;
-                    sensorManager.unregisterListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT));
+                    //sensorManager.unregisterListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT));
                     break;
             }
             if(temp&&light){
-                addColumn(lightString,tempString);
+                updateViewSensores(lightString, tempString);
             }
         }
     }
