@@ -14,6 +14,8 @@ public class MagicHelper {
 
     private static HashMap<String, IRequest> dust;
 
+    public static String token;
+
     public static void InitMagicHelper(){
         dust = new HashMap<String, IRequest>();
     }

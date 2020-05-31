@@ -99,7 +99,6 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     Toast.makeText(contexto.getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    //error
                 }
             }else{
                 Toast.makeText(contexto.getApplicationContext(), intento.getStringExtra("res"), Toast.LENGTH_LONG).show();

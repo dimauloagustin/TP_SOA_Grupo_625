@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             i.putExtra("magic", magicKey);
             MagicHelper.AddMagic(magicKey, loginRequest);
         } catch (Exception e) {
-            //error
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
         startService(i);
     }
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
+
     public class ReceptorLog extends BroadcastReceiver {
         public static final String ACTION_RESP = "com.example.soa_v3.intent.action.RESPUESTA_OPERACION_LOG";
 
@@ -86,15 +87,17 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     LoginResponse loginResponse = new LoginResponse(intento.getStringExtra("res"));
                     if(loginResponse.getState().equals( "success")) {
-                        Toast.makeText(contexto.getApplicationContext(), loginResponse.getToken(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(contexto.getApplicationContext(), loginResponse.getToken(), Toast.LENGTH_LONG).show();
                         //finish();
+                        MagicHelper.token = loginResponse.getToken();
+                        Intent intent = new Intent(contexto.getApplicationContext(), DataActivity.class);
+                        startActivity(intent);
                     }
                 } catch (Exception e) {
-                    Toast.makeText(contexto.getApplicationContext(), "Vamos bien! ya tenes cuenta", Toast.LENGTH_LONG).show();
-                    //error
+                    Toast.makeText(contexto.getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }else{
-                //error
+                Toast.makeText(contexto.getApplicationContext(), intento.getStringExtra("res"), Toast.LENGTH_LONG).show();
             }
         }
     }
