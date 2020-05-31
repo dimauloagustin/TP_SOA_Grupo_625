@@ -3,6 +3,8 @@ package com.example.soa_v3.models;
 import com.example.soa_v3.helpers.HttpRestHelper;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class RegisterRequest {
     private String name;
     private String lastName;
@@ -11,6 +13,8 @@ public class RegisterRequest {
     private String password;
     private int comision;
     private int grupo;
+
+    public HashMap<String,String> headers;
 
     public String getName() {
         return name;
@@ -69,6 +73,9 @@ public class RegisterRequest {
     }
 
     public String parse() throws Exception {
+
+        headers = new HashMap<String, String>();
+
         JSONObject json = new JSONObject();
         json.put("env", "TEST");
         json.put("name", this.name);
