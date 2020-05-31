@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.soa_v3.helpers.MagicHelper;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button btnRegistrarse;
@@ -15,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MagicHelper.InitMagicHelper();
+
         setContentView(R.layout.activity_main);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);

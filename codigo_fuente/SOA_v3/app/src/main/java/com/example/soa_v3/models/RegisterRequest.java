@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class RegisterRequest {
+public class RegisterRequest implements IRequest{
     private String name;
     private String lastName;
     private int dni;
@@ -72,6 +72,7 @@ public class RegisterRequest {
         this.grupo = grupo;
     }
 
+    @Override
     public String parse() throws Exception {
 
         headers = new HashMap<String, String>();
@@ -88,5 +89,10 @@ public class RegisterRequest {
         json.put("group", this.grupo);
 
         return json.toString();
+    }
+
+    @Override
+    public HashMap<String, String> getHeaders() {
+        return headers;
     }
 }

@@ -13,9 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.soa_v3.helpers.MagicHelper;
 import com.example.soa_v3.models.RegisterRequest;
 import com.example.soa_v3.models.RegisterResponse;
 import com.example.soa_v3.services.WebService;
+
+import java.util.UUID;
 
 public class RegisterActivity extends AppCompatActivity {
     private Button btnCancelar;
@@ -65,7 +68,10 @@ public class RegisterActivity extends AppCompatActivity {
         Intent i = new Intent(this, WebService.class);
         i.putExtra("url", "http://so-unlam.net.ar/api/api/register");
         try {
-            i.putExtra("body", registerRequest.parse());
+            //i.putExtra("body", registerRequest.parse());
+            String magicKey = UUID.randomUUID().toString();
+            i.putExtra("magic", magicKey);
+            MagicHelper.AddMagic(magicKey, registerRequest);
         } catch (Exception e) {
             //error
         }
