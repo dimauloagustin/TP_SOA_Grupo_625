@@ -194,7 +194,7 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private String converToHumanLight(int iLight){
-        return ((iLight / 40000) * 100 )+ " %";
+        return ((iLight *100)/ 40000 )+ " %";
     }
 
 
