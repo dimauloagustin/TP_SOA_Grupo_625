@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
         filtro.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(new ReceptorLog(), filtro);
     }
-    public void login() {
+
+    public void login() {¿
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(((EditText)findViewById(R.id.editEmail)).getText().toString());
         loginRequest.setPassword (((EditText)findViewById(R.id.editPassword)).getText().toString());
