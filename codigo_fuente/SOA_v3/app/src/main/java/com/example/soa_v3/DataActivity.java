@@ -42,6 +42,7 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
     private TextView tvDataTemperatura;
     private TextView tvDataLuz;
 
+    private static final  int MAX_VALUE_TABLE_VIEW = 10;
     float MAX_VALUE_LIGHT;
     int iLight = 0;
     int iTemperature = 0;
@@ -95,12 +96,23 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
         loadViewTable();
     }
 
+    private  void updateListWithNewValue(){
+
+        lsTemperature.add(0, iTemperature + "");
+        if(lsTemperature.size() > MAX_VALUE_TABLE_VIEW)
+            lsTemperature.remove(lsTemperature.size() - 1);
+
+
+        lsLight.add(0, iLight + "");
+        if(lsLight.size() > MAX_VALUE_TABLE_VIEW)
+            lsLight.remove(lsLight.size() - 1);
+    }
+
     private void medir(){
 
         clearViewTable();
+        updateListWithNewValue();
 
-        lsTemperature.add(iTemperature + "");
-        lsLight.add(iLight + "");
 
 
         EventRequest eventRequest = new EventRequest();
@@ -205,7 +217,7 @@ public class DataActivity extends AppCompatActivity implements SensorEventListen
             }
         }
     }
-    
+
 
     private String converLSToString(List<String> list) {
         StringBuilder csvList = new StringBuilder();
