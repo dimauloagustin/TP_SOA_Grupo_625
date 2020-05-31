@@ -67,6 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         Intent i = new Intent(this, WebService.class);
         i.putExtra("url", "http://so-unlam.net.ar/api/api/register");
+        i.putExtra("action", ReceptorRegistro.ACTION_RESP);
         try {
             //i.putExtra("body", registerRequest.parse());
             String magicKey = UUID.randomUUID().toString();

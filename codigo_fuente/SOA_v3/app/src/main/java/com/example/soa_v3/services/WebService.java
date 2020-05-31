@@ -18,11 +18,11 @@ public class WebService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String url = intent.getExtras().getString("url");
-       // String body = intent.getExtras().getString("body");
         String magicKey = intent.getExtras().getString("magic");
         IRequest req = MagicHelper.UseMagic(magicKey);
         Intent i = new Intent();
-        i.setAction(RegisterActivity.ReceptorRegistro.ACTION_RESP);
+        String action = intent.getExtras().getString("action");
+        i.setAction(action);
         i.addCategory(Intent.CATEGORY_DEFAULT);
         try {
             i.putExtra("res",new HttpRestHelper(url).send(req.parse(),req.getHeaders()));

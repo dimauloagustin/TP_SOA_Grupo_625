@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class LoginRequest {
+public class LoginRequest implements  IRequest{
     private String email;
     private String password;
 
@@ -32,10 +32,15 @@ public class LoginRequest {
 
         JSONObject json = new JSONObject();
 
-        json.put("env", "TEST");
+        json.put("env", "DEV");
         json.put("email", this.email);
         json.put("password", this.password);
 
         return json.toString();
+    }
+
+    @Override
+    public HashMap<String, String> getHeaders() {
+        return headers;
     }
 }

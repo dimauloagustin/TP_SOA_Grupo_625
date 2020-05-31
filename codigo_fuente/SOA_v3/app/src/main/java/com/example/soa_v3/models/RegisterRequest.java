@@ -79,7 +79,7 @@ public class RegisterRequest implements IRequest{
 
         JSONObject json = new JSONObject();
 
-        json.put("env", "TEST");
+        json.put("env", "DEV");
         json.put("name", this.name);
         json.put("lastname", this.lastName);
         json.put("dni", this.dni);
