@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Context;
 
 import com.example.soa_v3.RegisterActivity;
+import com.example.soa_v3.helpers.ConectionHelper;
 import com.example.soa_v3.helpers.HttpRestHelper;
 import com.example.soa_v3.helpers.MagicHelper;
 import com.example.soa_v3.models.IRequest;
@@ -25,8 +26,14 @@ public class WebService extends IntentService {
         i.setAction(action);
         i.addCategory(Intent.CATEGORY_DEFAULT);
         try {
-            i.putExtra("res",new HttpRestHelper(url).send(req.parse(),req.getHeaders()));
-            i.putExtra("isSucces", true);
+
+            if (ConectionHelper.isInternetAvailable()) {
+                i.putExtra("res", new HttpRestHelper(url).send(req.parse(), req.getHeaders()));
+                i.putExtra("isSucces", true);
+            }
+            else{
+                throw new Exception("No internet conection");
+            }
         } catch (Exception e) {
             i.putExtra("res",e.getMessage());
             i.putExtra("isSucces", false);

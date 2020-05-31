@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.soa_v3.helpers.ConectionHelper;
 import com.example.soa_v3.helpers.MagicHelper;
 import com.example.soa_v3.models.RegisterRequest;
 import com.example.soa_v3.models.RegisterResponse;
@@ -73,11 +76,12 @@ public class RegisterActivity extends AppCompatActivity {
             String magicKey = UUID.randomUUID().toString();
             i.putExtra("magic", magicKey);
             MagicHelper.AddMagic(magicKey, registerRequest);
-        } catch (Exception e) {
-            //error
-        }
-        startService(i);
 
+            startService(i);
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -94,11 +98,11 @@ public class RegisterActivity extends AppCompatActivity {
                         finish();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(contexto.getApplicationContext(), "Vamos bien! ya tenes cuenta", Toast.LENGTH_LONG).show();
+                    Toast.makeText(contexto.getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     //error
                 }
             }else{
-                //error
+                Toast.makeText(contexto.getApplicationContext(), intento.getStringExtra("res"), Toast.LENGTH_LONG).show();
             }
         }
     }
