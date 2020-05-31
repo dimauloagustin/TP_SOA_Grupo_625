@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.soa_v3.models.RegisterRequest;
+import com.example.soa_v3.models.RegisterResponse;
 import com.example.soa_v3.services.WebService;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -65,7 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
         i.putExtra("url", "http://so-unlam.net.ar/api/api/register");
         try {
             i.putExtra("body", registerRequest.parse());
-            Toast.makeText(this, "Vamos bien! ya tenes cuenta", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             //error
         }
@@ -79,9 +79,17 @@ public class RegisterActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context contexto, Intent intento){
-            boolean isSucces = intento.getBooleanExtra("isSucces",false);
-            if(isSucces){
-                finish();
+            boolean isSuccess = intento.getBooleanExtra("isSucces",false);
+            if(isSuccess){
+                try {
+                    if(new RegisterResponse(intento.getStringExtra("res")).getState().equals( "success")) {
+                        Toast.makeText(contexto.getApplicationContext(), "Vamos bien! ya tenes cuenta", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(contexto.getApplicationContext(), "Vamos bien! ya tenes cuenta", Toast.LENGTH_LONG).show();
+                    //error
+                }
             }else{
                 //error
             }
