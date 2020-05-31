@@ -77,6 +77,7 @@ public class RegisterRequest {
         headers = new HashMap<String, String>();
 
         JSONObject json = new JSONObject();
+
         json.put("env", "TEST");
         json.put("name", this.name);
         json.put("lastname", this.lastName);
